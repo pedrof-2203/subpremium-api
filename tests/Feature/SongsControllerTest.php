@@ -22,7 +22,7 @@ class SongsControllerTest extends TestCase
         $response = $this->getJson('/api/songs');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+                 ->assertJsonCount(3, 'data');
     }
 
     #[Test]
@@ -33,7 +33,7 @@ class SongsControllerTest extends TestCase
         $response = $this->getJson("/api/songs/{$song->id}");
 
         $response->assertStatus(200)
-                 ->assertJsonPath('title', 'Bohemian Rhapsody');
+                 ->assertJsonPath('data.titulo', 'Bohemian Rhapsody');
     }
 
     #[Test]
@@ -54,7 +54,8 @@ class SongsControllerTest extends TestCase
 
         $response = $this->postJson('/api/songs', $data);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201)
+                 ->assertJsonPath('data.titulo', 'Starman');
         $this->assertDatabaseHas('songs', ['title' => 'Starman']);
     }
 
@@ -77,7 +78,7 @@ class SongsControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonPath('song.title', 'New Song Title');
+                 ->assertJsonPath('data.titulo', 'New Song Title');
 
         $this->assertDatabaseHas('songs', ['title' => 'New Song Title']);
     }
