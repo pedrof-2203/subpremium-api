@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlbumsController;
 use App\Http\Controllers\ArtistsController;
 use App\Http\Controllers\BandsController;
+use App\Http\Controllers\SongsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +33,13 @@ Route::prefix('albums')->group(function () {
     Route::post('/', [AlbumsController::class, 'create']);    
     Route::put('/{id}', [AlbumsController::class, 'update']); 
     Route::delete('/{id}', [AlbumsController::class, 'destroy']); 
+});
+
+Route::prefix('songs')->group(function () {
+    Route::get('/', [SongsController::class, 'index']);
+    Route::get('/{id}', [SongsController::class, 'show']);
+    Route::post('/', [SongsController::class, 'create']);    
+    Route::put('/{id}', [SongsController::class, 'update']); 
+    Route::delete('/{id}', [SongsController::class, 'destroy']); 
 });
 
