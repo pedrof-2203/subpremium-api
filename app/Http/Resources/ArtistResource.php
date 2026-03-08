@@ -15,12 +15,14 @@ class ArtistResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'           => $this->id,
-            'nome_artista'   => $this->name,
-            'nascimento'   => $this->birthday ? $this->birthday->format('d/m/Y') : null,
-            'pais'         => $this->country,
-            'estilos'      => $this->genres,
-            'criado_em'    => $this->created_at?->toDateTimeString(),
+            'id' => $this->id,
+            'nome' => $this->name,
+            'pais' => $this->country,
+            'generos' => $this->genres,
+            'aniversario' => $this->birthday?->format('d/m/Y'),
+            'banda_id' => $this->band_id,
+            'criado_em' => $this->created_at?->format('d/m/Y'),
+            'atualizado_em' => $this->updated_at?->format('d/m/Y'),
         ];
     }
 }
