@@ -1,11 +1,14 @@
 <?php
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use SoftDeletes;
+
     /**
      * Run the migrations.
      */
@@ -20,6 +23,7 @@ return new class extends Migration
             $table->date('formed_at');
             $table->date('disbanded_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // 2. Artists
@@ -32,9 +36,9 @@ return new class extends Migration
             $table->foreignId('band_id')->nullable()->constrained()->nullOnDelete();
             $table->jsonb('genres')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
-        // 3. Albums
         Schema::create('albums', function (Blueprint $table) {
             $table->id();
             $table->foreignId('artist_id')->nullable()->constrained()->nullOnDelete();
@@ -44,6 +48,7 @@ return new class extends Migration
             $table->jsonb('genres')->nullable();
             $table->date('release_date');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         // 4. Songs
@@ -57,6 +62,7 @@ return new class extends Migration
             $table->jsonb('genres')->nullable();
             $table->date('release_date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
