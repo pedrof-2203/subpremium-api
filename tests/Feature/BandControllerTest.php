@@ -32,13 +32,15 @@ class BandControllerTest extends TestCase
         // Agora o POST é direto na raiz /api/bands
         $response = $this->postJson('/api/bands', $data);
 
-        $response->assertStatus(200); // Ou 201 se você alterou o controller
+        $response->assertStatus(201); // Ou 201 se você alterou o controller
         $this->assertDatabaseHas('bands', ['name' => 'Ghost']);
     }
 
     #[Test]
     public function it_can_update_a_band()
     {
+        $this->withoutExceptionHandling();
+
         $band = Band::factory()->create(['name' => 'Old Name']);
 
         // Agora o PUT é direto no ID /api/bands/{id}
@@ -60,7 +62,7 @@ class BandControllerTest extends TestCase
         $response = $this->deleteJson("/api/bands/{$band->id}");
 
         // 3. Verifica se o status foi sucesso
-        $response->assertStatus(200);
+        $response->assertStatus(204);
 
         // 4. Verifica se o registro REALMENTE sumiu do banco
         $this->assertSoftDeleted('bands', [

@@ -24,7 +24,7 @@ class ArtistsController extends Controller
         }
     }
 
-    public function create(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $validatedData = $this->validateCreateData($request);
         $artist = Artist::create($validatedData);

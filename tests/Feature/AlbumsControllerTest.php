@@ -21,7 +21,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->getJson('/api/albums');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+                 ->assertJsonCount(3, 'data');
     }
 
     #[Test]
@@ -32,7 +32,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->getJson("/api/albums/{$album->id}");
 
         $response->assertStatus(200)
-                 ->assertJsonPath('title', 'Master of Puppets');
+                 ->assertJsonPath('data.titulo', 'Master of Puppets');
     }
 
     #[Test]
@@ -50,7 +50,7 @@ class AlbumsControllerTest extends TestCase
 
         $response = $this->postJson('/api/albums', $data);
 
-        $response->assertStatus(200); // Se o controller retornar 200
+        $response->assertStatus(201); // Se o controller retornar 200
         $this->assertDatabaseHas('albums', ['title' => 'Random Access Memories']);
     }
 
@@ -73,7 +73,7 @@ class AlbumsControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonPath('album.title', 'New Title');
+                 ->assertJsonPath('data.titulo', 'New Title');
 
         $this->assertDatabaseHas('albums', ['title' => 'New Title']);
     }
@@ -86,7 +86,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->deleteJson("/api/albums/{$album->id}");
 
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Album deleted successfully']);
+                 ->assertJson(['message' => 'Album deletado com sucesso']);
 
         $this->assertDatabaseMissing('albums', ['id' => $album->id]);
     }

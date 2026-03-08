@@ -11,35 +11,29 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('bands')->group(function () {
-    Route::get('/', [BandsController::class, 'index']);
-    Route::get('/{id}', [BandsController::class, 'show']);
-    Route::post('/', [BandsController::class, 'create']);    
-    Route::put('/{id}', [BandsController::class, 'update']); 
-    Route::delete('/{id}', [BandsController::class, 'destroy']); 
-});
+Route::apiResource('bands', BandsController::class);
 
-Route::prefix('artists')->group(function () {
-    Route::get('/', [ArtistsController::class, 'index']);
-    Route::get('/{id}', [ArtistsController::class, 'show']);
-    Route::post('/', [ArtistsController::class, 'create']);    
-    Route::put('/{id}', [ArtistsController::class, 'update']); 
-    Route::delete('/{id}', [ArtistsController::class, 'destroy']); 
-});
+Route::apiResource('artists', ArtistsController::class);
 
-Route::prefix('albums')->group(function () {
-    Route::get('/', [AlbumsController::class, 'index']);
-    Route::get('/{id}', [AlbumsController::class, 'show']);
-    Route::post('/', [AlbumsController::class, 'create']);    
-    Route::put('/{id}', [AlbumsController::class, 'update']); 
-    Route::delete('/{id}', [AlbumsController::class, 'destroy']); 
-});
+Route::apiResource('albums', AlbumsController::class);
 
-Route::prefix('songs')->group(function () {
-    Route::get('/', [SongsController::class, 'index']);
-    Route::get('/{id}', [SongsController::class, 'show']);
-    Route::post('/', [SongsController::class, 'create']);    
-    Route::put('/{id}', [SongsController::class, 'update']); 
-    Route::delete('/{id}', [SongsController::class, 'destroy']); 
-});
+Route::apiResource('songs', SongsController::class);
+
+
+
+// Route::prefix('albums')->group(function () {
+    // Route::get('/', [AlbumsController::class, 'index']);
+    // Route::get('/{id}', [AlbumsController::class, 'show']);
+    // Route::post('/', [AlbumsController::class, 'create']);    
+    // Route::put('/{id}', [AlbumsController::class, 'update']); 
+    // Route::delete('/{id}', [AlbumsController::class, 'destroy']); 
+// });
+// 
+// Route::prefix('songs')->group(function () {
+    // Route::get('/', [SongsController::class, 'index']);
+    // Route::get('/{id}', [SongsController::class, 'show']);
+    // Route::post('/', [SongsController::class, 'create']);    
+    // Route::put('/{id}', [SongsController::class, 'update']); 
+    // Route::delete('/{id}', [SongsController::class, 'destroy']); 
+// });
 

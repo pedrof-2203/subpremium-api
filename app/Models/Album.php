@@ -13,8 +13,7 @@ class Album extends Model
 
     protected $casts = [
         'genres' => 'array',
-        'formed_at' => 'date',
-        'disbanded_at' => 'date',
+        'release_date' => 'date',
     ];
 }
 

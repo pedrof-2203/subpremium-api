@@ -24,7 +24,7 @@ class SongsController extends Controller
         }
     }
 
-    public function create(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $validatedData = $this->validateCreateData($request);
         $song = Song::create($validatedData);
