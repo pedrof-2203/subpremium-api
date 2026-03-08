@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\AlbumsController;
+use App\Http\Controllers\ArtistsController;
 use App\Http\Controllers\BandsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,18 @@ Route::prefix('bands')->group(function () {
 });
 
 Route::prefix('artists')->group(function () {
-    Route::get('/', [ArtistController::class, 'index']);
-    Route::get('/{id}', [ArtistController::class, 'show']);
-    Route::post('/', [ArtistController::class, 'create']);    
-    Route::put('/{id}', [ArtistController::class, 'update']); 
-    Route::delete('/{id}', [ArtistController::class, 'destroy']); 
+    Route::get('/', [ArtistsController::class, 'index']);
+    Route::get('/{id}', [ArtistsController::class, 'show']);
+    Route::post('/', [ArtistsController::class, 'create']);    
+    Route::put('/{id}', [ArtistsController::class, 'update']); 
+    Route::delete('/{id}', [ArtistsController::class, 'destroy']); 
 });
+
+Route::prefix('albums')->group(function () {
+    Route::get('/', [AlbumsController::class, 'index']);
+    Route::get('/{id}', [AlbumsController::class, 'show']);
+    Route::post('/', [AlbumsController::class, 'create']);    
+    Route::put('/{id}', [AlbumsController::class, 'update']); 
+    Route::delete('/{id}', [AlbumsController::class, 'destroy']); 
+});
+
