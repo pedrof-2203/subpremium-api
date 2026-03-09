@@ -1,39 +1,27 @@
 <?php
 
 use App\Http\Controllers\AlbumsController;
+use App\Http\Controllers\AlbumRatingsController;
 use App\Http\Controllers\ArtistsController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BandsController;
 use App\Http\Controllers\SongsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
-Route::apiResource('bands', BandsController::class);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::apiResource('bands', BandsController::class);
+    Route::apiResource('artists', ArtistsController::class);
+    Route::apiResource('albums', AlbumsController::class);
+    Route::apiResource('songs', SongsController::class);
+    Route::apiResource('album-ratings', AlbumRatingsController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
-Route::apiResource('artists', ArtistsController::class);
-
-Route::apiResource('albums', AlbumsController::class);
-
-Route::apiResource('songs', SongsController::class);
 
 
 
-// Route::prefix('albums')->group(function () {
-    // Route::get('/', [AlbumsController::class, 'index']);
-    // Route::get('/{id}', [AlbumsController::class, 'show']);
-    // Route::post('/', [AlbumsController::class, 'create']);    
-    // Route::put('/{id}', [AlbumsController::class, 'update']); 
-    // Route::delete('/{id}', [AlbumsController::class, 'destroy']); 
-// });
-// 
-// Route::prefix('songs')->group(function () {
-    // Route::get('/', [SongsController::class, 'index']);
-    // Route::get('/{id}', [SongsController::class, 'show']);
-    // Route::post('/', [SongsController::class, 'create']);    
-    // Route::put('/{id}', [SongsController::class, 'update']); 
-    // Route::delete('/{id}', [SongsController::class, 'destroy']); 
-// });
 

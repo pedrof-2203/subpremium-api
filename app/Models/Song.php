@@ -15,4 +15,9 @@ class Song extends Model
         'genres' => 'array',
         'release_date' => 'date',
     ];
+
+    public function album()
+    {
+        return $this->belongsTo(Album::class);
+    }
 }
