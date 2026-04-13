@@ -11,6 +11,7 @@ class BandsController extends Controller
     public function index(): JsonResponse
     {
         $bands = Band::all();
+
         return response()->json($bands);
     }
 
@@ -18,9 +19,10 @@ class BandsController extends Controller
     {
         try {
             $band = Band::findOrFail($id);
+
             return response()->json($band);
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -29,9 +31,10 @@ class BandsController extends Controller
         try {
             $validatedData = $this->validateCreateData($request);
             $band = Band::create($validatedData);
+
             return response()->json($band);
-            } catch (\Throwable $th) {
-                return response()->json(["message"=> $th->getMessage()]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th->getMessage()]);
         }
 
     }
@@ -47,11 +50,11 @@ class BandsController extends Controller
 
             return response()->json([
                 'message' => 'Band updated successfully',
-                'band' => $band
+                'band' => $band,
             ]);
 
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -59,7 +62,8 @@ class BandsController extends Controller
     {
         $band = Band::findOrFail($id);
         $band->delete();
-        return response()->json(["message"=> "Band deleted successfully"]);
+
+        return response()->json(['message' => 'Band deleted successfully']);
     }
 
     private function validateCreateData(Request $request): array
@@ -76,10 +80,10 @@ class BandsController extends Controller
     private function validateUpdateData(Request $request): array
     {
         return $request->validate([
-            'name'          => 'sometimes|string',
-            'country'      => 'sometimes|string',
-            'genres'       => 'sometimes|array',
-            'formed_at'    => 'sometimes|date',
+            'name' => 'sometimes|string',
+            'country' => 'sometimes|string',
+            'genres' => 'sometimes|array',
+            'formed_at' => 'sometimes|date',
             'disbanded_at' => 'nullable|date',
         ]);
     }

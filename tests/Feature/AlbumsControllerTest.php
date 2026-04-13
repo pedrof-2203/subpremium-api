@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Album;
-use App\Models\Artist;
 use App\Models\Band;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class AlbumsControllerTest extends TestCase
 {
@@ -21,7 +20,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->getJson('/api/albums');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+            ->assertJsonCount(3);
     }
 
     #[Test]
@@ -32,7 +31,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->getJson("/api/albums/{$album->id}");
 
         $response->assertStatus(200)
-                 ->assertJsonPath('title', 'Master of Puppets');
+            ->assertJsonPath('title', 'Master of Puppets');
     }
 
     #[Test]
@@ -60,7 +59,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->postJson('/api/albums', []);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['title', 'description', 'genres', 'release_date']);
+            ->assertJsonValidationErrors(['title', 'description', 'genres', 'release_date']);
     }
 
     #[Test]
@@ -69,11 +68,11 @@ class AlbumsControllerTest extends TestCase
         $album = Album::factory()->create(['title' => 'Old Title']);
 
         $response = $this->putJson("/api/albums/{$album->id}", [
-            'title' => 'New Title'
+            'title' => 'New Title',
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonPath('album.title', 'New Title');
+            ->assertJsonPath('album.title', 'New Title');
 
         $this->assertDatabaseHas('albums', ['title' => 'New Title']);
     }
@@ -86,7 +85,7 @@ class AlbumsControllerTest extends TestCase
         $response = $this->deleteJson("/api/albums/{$album->id}");
 
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Album deleted successfully']);
+            ->assertJson(['message' => 'Album deleted successfully']);
 
         $this->assertDatabaseMissing('albums', ['id' => $album->id]);
     }

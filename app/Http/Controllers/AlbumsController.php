@@ -11,6 +11,7 @@ class AlbumsController extends Controller
     public function index(): JsonResponse
     {
         $albums = Album::all();
+
         return response()->json($albums);
     }
 
@@ -18,9 +19,10 @@ class AlbumsController extends Controller
     {
         try {
             $album = Album::findOrFail($id);
+
             return response()->json($album);
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -28,6 +30,7 @@ class AlbumsController extends Controller
     {
         $validatedData = $this->validateCreateData($request);
         $album = Album::create($validatedData);
+
         return response()->json($album);
     }
 
@@ -42,11 +45,11 @@ class AlbumsController extends Controller
 
             return response()->json([
                 'message' => 'Album updated successfully',
-                'album' => $album
+                'album' => $album,
             ]);
 
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -54,7 +57,8 @@ class AlbumsController extends Controller
     {
         $album = Album::findOrFail($id);
         $album->delete();
-        return response()->json(["message"=> "Album deleted successfully"]);
+
+        return response()->json(['message' => 'Album deleted successfully']);
     }
 
     private function validateCreateData(Request $request): array

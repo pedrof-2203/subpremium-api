@@ -14,32 +14,31 @@ Route::get('/user', function (Request $request) {
 Route::prefix('bands')->group(function () {
     Route::get('/', [BandsController::class, 'index']);
     Route::get('/{id}', [BandsController::class, 'show']);
-    Route::post('/', [BandsController::class, 'create']);    
-    Route::put('/{id}', [BandsController::class, 'update']); 
-    Route::delete('/{id}', [BandsController::class, 'destroy']); 
+    Route::post('/', [BandsController::class, 'create']);
+    Route::put('/{id}', [BandsController::class, 'update']);
+    Route::delete('/{id}', [BandsController::class, 'destroy']);
 });
 
 Route::prefix('artists')->group(function () {
     Route::get('/', [ArtistsController::class, 'index']);
     Route::get('/{id}', [ArtistsController::class, 'show']);
-    Route::post('/', [ArtistsController::class, 'create']);    
-    Route::put('/{id}', [ArtistsController::class, 'update']); 
-    Route::delete('/{id}', [ArtistsController::class, 'destroy']); 
+    Route::post('/', [ArtistsController::class, 'create']);
+    Route::put('/{id}', [ArtistsController::class, 'update']);
+    Route::delete('/{id}', [ArtistsController::class, 'destroy']);
 });
 
 Route::prefix('albums')->group(function () {
     Route::get('/', [AlbumsController::class, 'index']);
     Route::get('/{id}', [AlbumsController::class, 'show']);
-    Route::post('/', [AlbumsController::class, 'create']);    
-    Route::put('/{id}', [AlbumsController::class, 'update']); 
-    Route::delete('/{id}', [AlbumsController::class, 'destroy']); 
+    Route::post('/', [AlbumsController::class, 'create']);
+    Route::put('/{id}', [AlbumsController::class, 'update']);
+    Route::delete('/{id}', [AlbumsController::class, 'destroy']);
 });
 
 Route::prefix('songs')->group(function () {
     Route::get('/', [SongsController::class, 'index']);
     Route::get('/{id}', [SongsController::class, 'show']);
-    Route::post('/', [SongsController::class, 'create']);    
-    Route::put('/{id}', [SongsController::class, 'update']); 
-    Route::delete('/{id}', [SongsController::class, 'destroy']); 
+    Route::post('/', [SongsController::class, 'create']);
+    Route::put('/{id}', [SongsController::class, 'update']);
+    Route::delete('/{id}', [SongsController::class, 'destroy']);
 });
-

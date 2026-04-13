@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Band;
-use App\Models\Artist;
 use App\Models\Album;
+use App\Models\Artist;
+use App\Models\Band;
 use App\Models\Song;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +14,7 @@ class MusicDatabaseSeeder extends Seeder
     {
         // Create 5 Bands, each with 3 Artists
         Band::factory(5)->create()->each(function ($band) {
-            
+
             // Create Artists for this band
             Artist::factory(3)->create([
                 'band_id' => $band->id,
@@ -25,7 +25,7 @@ class MusicDatabaseSeeder extends Seeder
             Album::factory(2)->create([
                 'band_id' => $band->id,
             ])->each(function ($album) use ($band) {
-                
+
                 // Create 10 Songs for each album
                 Song::factory(10)->create([
                     'album_id' => $album->id,

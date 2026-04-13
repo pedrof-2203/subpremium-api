@@ -11,6 +11,7 @@ class SongsController extends Controller
     public function index(): JsonResponse
     {
         $songs = Song::all();
+
         return response()->json($songs);
     }
 
@@ -18,9 +19,10 @@ class SongsController extends Controller
     {
         try {
             $song = Song::findOrFail($id);
+
             return response()->json($song);
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -28,6 +30,7 @@ class SongsController extends Controller
     {
         $validatedData = $this->validateCreateData($request);
         $song = Song::create($validatedData);
+
         return response()->json($song);
     }
 
@@ -42,11 +45,11 @@ class SongsController extends Controller
 
             return response()->json([
                 'message' => 'Song updated successfully',
-                'song' => $song
+                'song' => $song,
             ]);
 
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -54,7 +57,8 @@ class SongsController extends Controller
     {
         $song = Song::findOrFail($id);
         $song->delete();
-        return response()->json(["message"=> "Song deleted successfully"]);
+
+        return response()->json(['message' => 'Song deleted successfully']);
     }
 
     private function validateCreateData(Request $request): array

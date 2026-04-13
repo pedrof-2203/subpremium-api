@@ -11,6 +11,7 @@ class ArtistsController extends Controller
     public function index(): JsonResponse
     {
         $artists = Artist::all();
+
         return response()->json($artists);
     }
 
@@ -18,9 +19,10 @@ class ArtistsController extends Controller
     {
         try {
             $artist = Artist::findOrFail($id);
+
             return response()->json($artist);
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -28,6 +30,7 @@ class ArtistsController extends Controller
     {
         $validatedData = $this->validateCreateData($request);
         $artist = Artist::create($validatedData);
+
         return response()->json($artist);
     }
 
@@ -42,11 +45,11 @@ class ArtistsController extends Controller
 
             return response()->json([
                 'message' => 'Artist updated successfully',
-                'artist' => $artist
+                'artist' => $artist,
             ]);
 
         } catch (\Throwable $th) {
-            return response()->json(["message"=> $th->getMessage()]);
+            return response()->json(['message' => $th->getMessage()]);
         }
     }
 
@@ -54,7 +57,8 @@ class ArtistsController extends Controller
     {
         $artist = Artist::findOrFail($id);
         $artist->delete();
-        return response()->json(["message"=> "Artist deleted successfully"]);
+
+        return response()->json(['message' => 'Artist deleted successfully']);
     }
 
     private function validateCreateData(Request $request): array

@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Band;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test; // Importante para evitar os avisos
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase; // Importante para evitar os avisos
 
 class BandControllerTest extends TestCase
 {
@@ -43,7 +43,7 @@ class BandControllerTest extends TestCase
 
         // Agora o PUT é direto no ID /api/bands/{id}
         $response = $this->putJson("/api/bands/{$band->id}", [
-            'name' => 'New Name'
+            'name' => 'New Name',
         ]);
 
         $response->assertStatus(200);
@@ -64,7 +64,7 @@ class BandControllerTest extends TestCase
 
         // 4. Verifica se o registro REALMENTE sumiu do banco
         $this->assertSoftDeleted('bands', [
-            'id' => $band->id
+            'id' => $band->id,
         ]);
     }
 }

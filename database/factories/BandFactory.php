@@ -17,7 +17,7 @@ class BandFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company() . ' ' . $this->faker->randomElement(['Project', 'Experience', 'Quartet']),
+            'name' => $this->faker->company().' '.$this->faker->randomElement(['Project', 'Experience', 'Quartet']),
             'country' => $this->faker->country(),
             'genres' => ['Rock', 'Indie', 'Alternative'], // Casted to array in Model
             'formed_at' => $this->faker->date(),

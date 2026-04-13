@@ -58,7 +58,7 @@ return new class extends Migration
             $table->foreignId('band_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('album_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
-            $table->text('description')->nullable(); 
+            $table->text('description')->nullable();
             $table->jsonb('genres')->nullable();
             $table->date('release_date');
             $table->timestamps();

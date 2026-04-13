@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model
 {
-    use HasFactory; 
+    use HasFactory;
 
     protected $fillable = ['artist_id', 'band_id', 'title', 'description', 'genres', 'release_date'];
 
@@ -17,5 +17,3 @@ class Album extends Model
         'disbanded_at' => 'date',
     ];
 }
-
-

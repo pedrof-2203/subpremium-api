@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Artist;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class ArtistControllerTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ArtistControllerTest extends TestCase
         $response = $this->getJson('/api/artists');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(3);
+            ->assertJsonCount(3);
     }
 
     #[Test]
@@ -30,7 +30,7 @@ class ArtistControllerTest extends TestCase
         $response = $this->getJson("/api/artists/{$artist->id}");
 
         $response->assertStatus(200)
-                 ->assertJsonPath('name', 'Freddie Mercury');
+            ->assertJsonPath('name', 'Freddie Mercury');
     }
 
     #[Test]
@@ -56,7 +56,7 @@ class ArtistControllerTest extends TestCase
 
         // O Laravel retorna 422 para erros de validação
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['name', 'country', 'birthday', 'genres']);
+            ->assertJsonValidationErrors(['name', 'country', 'birthday', 'genres']);
     }
 
     #[Test]
@@ -65,11 +65,11 @@ class ArtistControllerTest extends TestCase
         $artist = Artist::factory()->create(['name' => 'Original Name']);
 
         $response = $this->putJson("/api/artists/{$artist->id}", [
-            'name' => 'Updated Name'
+            'name' => 'Updated Name',
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonPath('artist.name', 'Updated Name');
+            ->assertJsonPath('artist.name', 'Updated Name');
 
         $this->assertDatabaseHas('artists', ['name' => 'Updated Name']);
     }
@@ -82,7 +82,7 @@ class ArtistControllerTest extends TestCase
         $response = $this->deleteJson("/api/artists/{$artist->id}");
 
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Artist deleted successfully']);
+            ->assertJson(['message' => 'Artist deleted successfully']);
 
         $this->assertDatabaseMissing('artists', ['id' => $artist->id]);
     }
