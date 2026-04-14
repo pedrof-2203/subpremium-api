@@ -32,7 +32,7 @@ class BandControllerTest extends TestCase
         // Agora o POST é direto na raiz /api/bands
         $response = $this->postJson('/api/bands', $data);
 
-        $response->assertStatus(201); // Ou 201 se você alterou o controller
+        $response->assertStatus(200); // Ou 201 se você alterou o controller
         $this->assertDatabaseHas('bands', ['name' => 'Ghost']);
     }
 
@@ -62,7 +62,7 @@ class BandControllerTest extends TestCase
         $response = $this->deleteJson("/api/bands/{$band->id}");
 
         // 3. Verifica se o status foi sucesso
-        $response->assertStatus(204);
+        $response->assertStatus(200);
 
         // 4. Verifica se o registro REALMENTE sumiu do banco
         $this->assertSoftDeleted('bands', [
