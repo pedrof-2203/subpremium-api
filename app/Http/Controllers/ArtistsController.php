@@ -2,42 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreArtistRequest;
-use App\Http\Resources\ArtistResource;
 use App\Models\Artist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ArtistsController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $artists = Artist::all();
-        return ArtistResource::collection($artists);
+
+        return response()->json($artists);
     }
 
-    public function show(Artist $artist)
+    public function show($id): JsonResponse
     {
-        return new ArtistResource($artist);
+        try {
+            $artist = Artist::findOrFail($id);
+
+            return response()->json($artist);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th->getMessage()]);
+        }
     }
 
-    public function store(StoreArtistRequest $request)
+    public function create(Request $request): JsonResponse
     {
-        $artist = Artist::create($request->validated());
-        return (new ArtistResource($artist))
-            ->response()
-            ->setStatusCode(201);
+        $validatedData = $this->validateCreateData($request);
+        $artist = Artist::create($validatedData);
+
+        return response()->json($artist);
     }
 
-    public function update(StoreArtistRequest $request, Artist $artist)
+    public function update(Request $request, $id): JsonResponse
     {
-        $artist->update($request->validated());
-        return new ArtistResource($artist);
+        try {
+            $artist = Artist::findOrFail($id);
+
+            $validatedData = $this->validateUpdateData($request);
+
+            $artist->update($validatedData);
+
+            return response()->json([
+                'message' => 'Artist updated successfully',
+                'artist' => $artist,
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th->getMessage()]);
+        }
     }
 
-    public function destroy(Artist $artist)
+    public function destroy($id): JsonResponse
     {
+        $artist = Artist::findOrFail($id);
         $artist->delete();
-        return response()->json(["message" => "Artist deleted successfully"]);
+
+        return response()->json(['message' => 'Artist deleted successfully']);
+    }
+
+    private function validateCreateData(Request $request): array
+    {
+        return $request->validate([
+            'name' => 'required|string',
+            'country' => 'required|string',
+            'birthday' => 'required|date',
+            'genres' => 'required|array',
+        ]);
+    }
+
+    private function validateUpdateData(Request $request): array
+    {
+        return $request->validate([
+            'name' => 'sometimes|string',
+            'country' => 'sometimes|string',
+            'birthday' => 'sometimes|date',
+            'genres' => 'sometimes|array',
+        ]);
     }
 }
