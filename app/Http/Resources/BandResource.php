@@ -5,6 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class BandResource
+ *
+ * Transforms the raw Band model into a localized JSON representation.
+ * Customizes field names to Portuguese (e.g., `nome_banda`, `fundada_em`) 
+ * and handles date string formatting and derived properties (`ativa`).
+ *
+ * @mixin \App\Models\Band
+ * @package App\Http\Resources
+ */
 class BandResource extends JsonResource
 {
     /**

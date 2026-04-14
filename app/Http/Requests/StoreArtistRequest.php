@@ -4,6 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class StoreArtistRequest
+ *
+ * Handles authorization and validation for the Artist model endpoints.
+ * Automatically adapts `required` validation logic depending on if the request 
+ * is a creation (POST) or an update (PUT/PATCH).
+ *
+ * @package App\Http\Requests
+ */
 class StoreArtistRequest extends FormRequest
 {
     /**

@@ -4,6 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class StoreAlbumRequest
+ *
+ * Handles authorization and dynamic validation rules for creating and updating Album models.
+ * Reuses validation arrays between POST (create) and PUT/PATCH (update) where 'required'
+ * fields become 'sometimes' during updates.
+ *
+ * @package App\Http\Requests
+ */
 class StoreAlbumRequest extends FormRequest
 {
     /**

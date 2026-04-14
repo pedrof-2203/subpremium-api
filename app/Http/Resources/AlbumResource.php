@@ -5,6 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class AlbumResource
+ *
+ * Transforms the raw Album model into a localized JSON representation.
+ * Customizes field names to Portuguese (e.g., `banda_id`, `titulo`, `descricao`) 
+ * and handles formatting for the client response payload.
+ *
+ * @mixin \App\Models\Album
+ * @package App\Http\Resources
+ */
 class AlbumResource extends JsonResource
 {
     /**

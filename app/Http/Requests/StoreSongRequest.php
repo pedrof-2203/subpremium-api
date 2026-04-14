@@ -4,6 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class StoreSongRequest
+ *
+ * Provides authorization state and strictly typed validation for Song model interactions.
+ * Ensures the relations (`album_id`, `artist_id`, `band_id`) exist in the database 
+ * and handles polymorphic-like conditional validation fields.
+ *
+ * @package App\Http\Requests
+ */
 class StoreSongRequest extends FormRequest
 {
     /**

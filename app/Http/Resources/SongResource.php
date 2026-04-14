@@ -4,6 +4,16 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class SongResource
+ *
+ * Transforms the raw Song model into a localized JSON representation.
+ * Customizes field names to Portuguese (e.g., `artista_id`, `banda_id`, `album_id`, `titulo`) 
+ * and handles formatting for the client response payload.
+ *
+ * @mixin \App\Models\Song
+ * @package App\Http\Resources
+ */
 class SongResource extends JsonResource
 {
     /**

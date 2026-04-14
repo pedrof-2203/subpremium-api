@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class ArtistsController extends Controller
 {
+    /**
+     * Fetch all artists.
+     *
+     * Retrieves a list of all raw Artist models from the database.
+     *
+     * @return \Illuminate\Http\JsonResponse JSON response containing a collection of Artist objects.
+     */
     public function index(): JsonResponse
     {
         $artists = Artist::all();
@@ -15,6 +22,16 @@ class ArtistsController extends Controller
         return response()->json($artists);
     }
 
+    /**
+     * Fetch a single artist by ID.
+     *
+     * Retrieves an existing artist by its primary key. Catches failure 
+     * if the model does not exist and returns a standard error message.
+     *
+     * @param int|string $id The ID of the artist to fetch.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing the single Artist object or an error message.
+     */
     public function show($id): JsonResponse
     {
         try {
@@ -26,6 +43,28 @@ class ArtistsController extends Controller
         }
     }
 
+    /**
+     * Create a new artist.
+     *
+     * Validates the incoming request and generates a new record in the database.
+     *
+     * @param \Illuminate\Http\Request $request The incoming HTTP request.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing the newly created Artist object.
+    /**
+     * Update an existing artist.
+     *
+     * Finds the artist by ID, validates the provided fields, and updates the record.
+     * Exceptions (such as model not found) are caught and returned as JSON.
+     *
+     * @param \Illuminate\Http\Request $request The incoming HTTP request containing fields to update.
+     * @param int|string $id The ID of the artist to update.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing a success message and the updated artist, or an error message.
+     */
+     * 
+     * @throws \Illuminate\Validation\ValidationException If validation fails.
+     */
     public function create(Request $request): JsonResponse
     {
         $validatedData = $this->validateCreateData($request);
@@ -42,7 +81,19 @@ class ArtistsController extends Controller
             $validatedData = $this->validateUpdateData($request);
 
             $artist->update($validatedData);
-
+/**
+     * Delete an existing artist.
+     *
+     * Permanently deletes the corresponding artist record from the database.
+     * Throws an exception if the model is not found, handled implicitly or globally.
+     *
+     * @param int|string $id The ID of the artist to delete.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing a success message.
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the artist is not found.
+     */
+    
             return response()->json([
                 'message' => 'Artist updated successfully',
                 'artist' => $artist,

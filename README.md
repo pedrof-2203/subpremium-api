@@ -1,59 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Subpremium Music API Reference
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This documentation serves as the high-level reference for backend software engineers working on the Subpremium Music API. It compiles the structural concepts, domain models, and architectural patterns embedded within the codebase.
 
-## About Laravel
+## Tech Stack Overview
+- **Framework:** Laravel 12 (PHP 8.2+)
+- **Testing:** PHPUnit 11.5
+- **Authentication:** Laravel Sanctum (Personal Access Tokens)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Domain Architecture
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The API operates around four core music domain concepts:
 
-## Learning Laravel
+1.  **Artist (`App\Models\Artist`)**
+    -   Represents individual musicians. 
+    -   Can optionally belong to a `Band` (`band_id`).
+    -   *Properties:* `name`, `country`, `genres` (array cast), `birthday` (date cast).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+2.  **Band (`App\Models\Band`)**
+    -   Represents musical groups.
+    -   Utilizes standard Soft Deletions.
+    -   *Properties:* `name`, `country`, `genres` (array cast), `formed_at`, `disbanded_at`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3.  **Album (`App\Models\Album`)**
+    -   Represents a collection of tracks.
+    -   Can explicitly belong to either an `Artist` (`artist_id`) or a `Band` (`band_id`).
+    -   *Properties:* `title`, `description`, `genres`, `release_date`.
 
-## Laravel Sponsors
+4.  **Song (`App\Models\Song`)**
+    -   Represents an individual track.
+    -   Belongs to an `Album` (`album_id`), and optionally an `Artist` or `Band`.
+    -   *Properties:* `title`, `description`, `genres`, `release_date`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+5.  **Album Rating (`App\Models\AlbumRating`)**
+    -   Pivot/interaction model storing user reviews.
+    -   Links an `Album` (`album_id`) to a `User` (`user_id`).
+    -   *Properties:* `rating`, `title`, `comment`, `favorite`. Soft deleted.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Request Lifecycle & Controllers
 
-## Contributing
+The standard controller footprint (e.g., `AlbumsController`, `ArtistsController`, `BandsController`, `SongsController`) follows standard RESTful verb-mapping while omitting strict `Route::apiResource` abstractions.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### General Controller Conventions
+-   **Fetching (Index/Show):** Returns raw Eloquent Models or Database Collections directly cast to JSON payloads. Model-Not-Found failures are wrapped in standard `try/catch (\Throwable $th)` blocks returning a consistent `["message" => "error text"]` wrapper.
+-   **State Altering (Create/Update/Destroy):** Action operations successfully return the modified payload accompanied by a localized success message (e.g., `['message' => 'Record updated successfully', 'model' => $model]`).
 
-## Code of Conduct
+### Specialized Handling (`AlbumRatingsController`)
+Note that the `AlbumRatingsController` currently serves a slightly modified mapping structure. It handles routing mapped heavily to standard `API Resources` and explicit `FormRequest` validations for `Band` records, acting distinctly compared to the core domain controllers.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Data Validation & Transformers
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+When handling complex data transformations (such as nested inputs or localized API output schemas), standard Laravel abstraction tools are enforced.
 
-## License
+### Validation Constraints (`App\Http\Requests`)
+Classes like `StoreBandRequest` and `StoreSongRequest` provide isolated validation logic mapping rules conditionally depending on the HTTP Verb executing them:
+-   **POST (Creation):** Strict requirement (`required`) logic is applied to core properties.
+-   **PUT/PATCH (Updating):** Requirements are relaxed (`sometimes`) supporting sparse/partial payload hydration.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### API Response Localization (`App\Http\Resources`)
+Classes like `BandResource`, `AlbumResource`, and `SongResource` are responsible for translating standard English database properties into localized Portuguese presentation keys for external consumption (e.g., mapping `name` to `nome_banda`, and handling formatting for derived states such as `ativa`).
+
+---
+
+## Authentication (`AuthController`)
+
+Endpoints requiring authenticated interactions communicate using `Laravel Sanctum`.
+-   **Register/Login:** Validated credentials result in issuing an atomic, plain-text `auth_token`.
+-   **Logout:** Revokes *strictly* the `currentAccessToken()` attached to the authenticated Request, leaving alternative concurrent sessions unaffected.
+
+---
+
+## Developer Operations
+
+Starting a local development flow relies on standard ecosystem tools.
+
+```bash
+# Run local migrations and seeders (using Factories)
+php artisan migrate:fresh --seed
+
+# Spin up the local development web server
+php artisan serve
+
+# Run the unified test suites
+php artisan test
+```

@@ -5,6 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class ArtistResource
+ *
+ * Transforms the raw Artist model into a localized JSON representation.
+ * Customizes field names to Portuguese (e.g., `nome`, `pais`, `aniversario`) 
+ * and handles formatting for the client response payload.
+ *
+ * @mixin \App\Models\Artist
+ * @package App\Http\Resources
+ */
 class ArtistResource extends JsonResource
 {
     /**

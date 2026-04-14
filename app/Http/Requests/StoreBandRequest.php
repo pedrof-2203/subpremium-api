@@ -4,6 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class StoreBandRequest
+ *
+ * Handles authorization and validation rules for creating and updating Band models.
+ * Automatically adapts requirements (e.g., `required` vs `sometimes`) based on 
+ * the HTTP method (POST for creation vs PUT/PATCH for updates).
+ *
+ * @package App\Http\Requests
+ */
 class StoreBandRequest extends FormRequest
 {
     /**
@@ -16,6 +25,10 @@ class StoreBandRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     * 
+     * Applies conditional logic to require fields during creation (POST)
+     * but only validates them if present during an update (PUT/PATCH).
+     * Includes custom cross-field validation ensuring disbanded_at > formed_at.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */

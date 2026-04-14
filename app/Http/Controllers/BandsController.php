@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class BandsController extends Controller
 {
+    /**
+     * Fetch all bands.
+     *
+     * Retrieves a list of all raw Band models from the database.
+     *
+     * @return \Illuminate\Http\JsonResponse JSON response containing a collection of Band objects.
+     */
     public function index(): JsonResponse
     {
         $bands = Band::all();
@@ -15,7 +22,27 @@ class BandsController extends Controller
         return response()->json($bands);
     }
 
+    /**
+     * Fetch a single band by ID.
+     *
+     * Retrieves an existing band by its primary key. Catches failure 
+     * if the model does not exist and returns a standard error message.
+     *
+     * @param int|string $id The ID of the band to fetch.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing the single Band object or an error message.
+     */
     public function show($id): JsonResponse
+    /**
+     * Create a new band.
+     *
+     * Validates the incoming request and generates a new record in the database.
+     * Catches validation or database exceptions and returns them gracefully.
+     *
+     * @param \Illuminate\Http\Request $request The incoming HTTP request.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing the newly created Band object or an error message.
+     */
     {
         try {
             $band = Band::findOrFail($id);
@@ -29,6 +56,17 @@ class BandsController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
+    /**
+     * Update an existing band.
+     *
+     * Finds the band by ID, validates the provided fields, and updates the record.
+     * Exceptions (such as model not found) are caught and returned as JSON.
+     *
+     * @param \Illuminate\Http\Request $request The incoming HTTP request containing fields to update.
+     * @param int|string $id The ID of the band to update.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing a success message and the updated band, or an error message.
+     */
             $validatedData = $this->validateCreateData($request);
             $band = Band::create($validatedData);
 
@@ -37,6 +75,18 @@ class BandsController extends Controller
             return response()->json(['message' => $th->getMessage()]);
         }
 
+    /**
+     * Delete an existing band.
+     *
+     * Soft deletes the corresponding band record from the database.
+     * Throws an exception if the model is not found, handled implicitly or globally.
+     *
+     * @param int|string $id The ID of the band to delete.
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response containing a success message.
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the band is not found.
+     */
     }
 
     public function update(Request $request, $id): JsonResponse
