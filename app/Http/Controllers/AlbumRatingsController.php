@@ -39,15 +39,6 @@ class AlbumRatingsController extends Controller
     }
 
     /**
-     * Create a new band (currently within AlbumRatingsController).
-     *
-     * Validates the request using StoreBandRequest and creates a new band explicitly returning a 201 status.
-     * Note: This controller currently creates Band resources.
-     *
-     * @param \App\Http\Requests\StoreBandRequest $request The validated incoming request.
-     * 
-     * @return \Illuminate\Http\JsonResponse JSON response containing the newly created BandResource.
-    /**
      * Update an existing band (currently within AlbumRatingsController).
      *
      * Validates and updates the bound band using StoreBandRequest, returning the updated resource.
@@ -57,7 +48,6 @@ class AlbumRatingsController extends Controller
      * @param \App\Models\Band $band The implicitly bound band model to update.
      * 
      * @return \App\Http\Resources\BandResource
-     */
      */
     public function store(StoreBandRequest $request): JsonResponse
     {
